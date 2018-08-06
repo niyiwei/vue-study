@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 下拉选择框</title>
+</head>
+
+<body>
+    <div id="app">
+        <select v-model="selected" multiple>
+            <!-- option 的 value属性是一个备选项，如果option含有value则会优先匹配value里面的值。如果没有直接匹配option的text值。 -->
+            <option value="请选择">请选择</option>
+            <option value="html">HTML</option>
+            <option value="js">JS</option>
+            <option value="css">css</option>
+        </select>
+        <p>您的选择项是： {{selected}}</p>
+    </div>
+
+    <div id="app2">
+        <select v-model="selected">
+            <option value="请选择">请选择</option>
+            <option v-for="option in options" :value="option.value">{{option.text}}</option>
+        </select>
+        <p>您选择的是： {{selected}}</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                options:[
+                    {value: 'js', text: 'js'},
+                    {value: 'html', text: 'html'},
+                    {value: 'css', text: 'css'}
+                ]
+                ,selected: 'html'
+            }
+        })
+        var app = new Vue({
+            el: "#app",
+            data: {
+                selected: 'css'
+            }
+        })
+    </script>
+</body>
+
+</html>

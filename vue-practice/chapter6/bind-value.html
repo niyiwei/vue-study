@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 绑定值</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="radio" v-model="picked" :value="value">
+        <label for="">单选按钮</label>
+        <p>{{picked}}</p>
+        <p>{{value}}</p>
+    </div>
+    <div id="app2">
+        <input type="checkbox" v-model="toggle" :ture-value="value1" :false-value="value2">
+        <label>复选框</label>
+        <p>{{toggle}}</p>
+        <p>{{value1}}</p>
+        <p>{{value2}}</p>
+    </div>
+
+    <div id="app3">
+        <select v-model="selected">
+            <option :value="{number : 123}">123</option>
+        </select>
+        <p>选择的值: {{selected.number}}</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var app3 = new Vue({
+            el: '#app3',
+            data: {
+                selected: 123
+            }
+        })
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                toggle: false,
+                value1: "bxm",
+                value2: 'ehm'
+            }
+        })
+        var app = new Vue({
+            el: "#app",
+            data: {
+                picked: false,
+                value: 'bxm'
+            }
+        })
+    </script>
+</body>
+
+</html>
