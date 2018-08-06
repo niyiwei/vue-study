@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 使用过滤器 | -->
+        {{date | formatDate}}
+        <!-- 过滤器也可以传参数 -->
+        <!-- {{ data | filterA | filterB}} -->
+        <!-- 这里的字符串arg1和arg2将分别传给过滤器的第二个参数和第三个参数,因为第一个是数据本身 -->
+        <!-- {{ data | filterA('arg1','arg2')}} -->
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var padDate = function (value) {
+            return value < 10 ? '0' + value : value
+        }
+        var app = new Vue({
+            el: '#app',
+            data: {
+                date: new Date()
+            },
+            mounted: function () {
+                // 声明一个变量指向Vue示例this,保证作用域一致
+                var _this = this;
+                this.timer = setInterval(function () {
+                    _this.date = new Date()
+                }, 1000)
+            },
+            beforeDestory: function () {
+                console.info("销毁方法---", arguments.length, arguments)
+                if (this.timer) {
+                    clearInterval(this.timer)
+                }
+            },
+            filters: {
+                // value 就是要过滤的数据
+                formatDate: function (value) {
+                    var date = new Date(value)
+                    var year = date.getFullYear()
+                    var month = padDate(date.getMonth())
+                    var day = padDate(date.getDay())
+                    var hours = padDate(date.getHours())
+                    var mintues = padDate(date.getMinutes())
+                    var seconds = padDate(date.getSeconds())
+                    return year + '-' + month + '-' + day + ' ' + hours + ':' + mintues + ':' + seconds
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

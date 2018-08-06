@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue-列表渲染指令</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="book in books">{{ book.name }}</li>
+            <li v-for="(book, index) of books">{{index}} -- {{ book.name }}</li>
+        </ul>
+        <span v-for="(value, key,index) of user">
+            {{key}} -- {{index}} -- {{value}}
+        </span>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                books: [{
+                    name: '<Vue.js 实战>'
+                }, {
+                    name: '<Javascript 语言精粹>'
+                }, {
+                    name: '<Javascript 高级程序设计>'
+                }]
+                ,user:{
+                    id : 1
+                    ,name : '张三'
+                    ,address: '北京'
+                    ,idcard: '242344949'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

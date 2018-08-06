@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue-声明周期</title>
+</head>
+
+<body>
+    <div id="app">{{ a }}</div>
+    <script src="../vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                a: 2
+            },
+            created: function () {
+                // 实例创建完成后调用，此阶段完成了数据的观测等，但尚未挂载， $el 还不可用。 需要初始化处理一些数据时会比较有用，后面章节将有介绍.
+                console.log("created", this.a);
+            },
+            mounted: function () {
+                // el 挂载到实例上后调用，一般我们的第一个业务逻辑会在这里开始 。
+                console.log(this.$el)
+            },beforeDestory:function(){
+                console.info("beforeDestory", arguments.length, arguments)
+            }
+        })
+    </script>
+</body>
+
+</html>

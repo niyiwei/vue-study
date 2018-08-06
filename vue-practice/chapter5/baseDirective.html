@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基本指令</title>
+    <style>
+        [v-lock] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- v-cloak 不需要表达式,它会在Vue实例结束编译时从绑定的HTML元素上移除,经常和css的display:none;配合使用 -->
+    <div id="app" v-cloak>
+        v-cloak - {{message}}
+    </div>
+    <!-- v-cloak 是一个解决初始化慢导致页面闪动的最佳实践,对于简单的项目很实用,但是在具有工程化的项目里
+    ,比如 webpack和vue-router时.项目的HTML结构只有一个空的div元素,审核的内容都是由路由去挂载不同组建完成的,所以不再需要v-cloak. -->
+
+
+    <!-- v-if v-else-if v-else -->
+    <div id="app2">
+        <p v-if="status === 1">当status为1时显示该行</p>
+        <p v-else-if="status === 2">当status为2时显示该行</p>
+        <p v-else>当status不等于1也不等于2时显示该行</p>
+
+        <!-- template 使用v-if 后 html元素里面不包含template元素 -->
+        <template v-if="status === 1">
+            <p>啊哈???</p>
+        </template>
+    </div>
+
+    <!-- Vue 在渲染元素时 ，出于效率考虑，会尽可能地复用已有的元素而非重新渲染 -->
+    <!-- 虽然DOM改变了,但是之前输入的值内容并没有改变 -->
+    <!-- 如果你不希望这样做,可以使用Vue.js提供的key属性,它可以让你自己决定是否要复用元素,key的值必须是唯一的 -->
+    <div id="app3">
+        <template v-if="type ==='name'">
+            <label>用户名 :</label>
+            <input placeholder="输入用户名" key="name-input">
+        </template>
+        <template v-else>
+            <label>邮箱 : </label>
+            <input placeholder="输入邮箱" key="mail-input">
+        </template>
+        <button @click="handleToggleClick">切换输入类型</button>
+    </div>
+
+    <!-- v-show的用法与v-if基本一致，只不过v-show是改变元素的css属性display。
+        当v-show 表 达式的值为 false 时， 元素会隐藏，查看 DOM 结构会看到元素上加载了内联样式 display: none;, -->
+    <div id="app4">
+        <p v-show="status === 1">当status为1时显示该行</p>
+    </div>
+    <!-- v-if和 v-show 具有类似的功能，不过 v-if才是真正的条件渲染，它会根据表达式适当地销毁 或重建元素及绑定的事件或子组件。
+        若表达式初始值为 false，则一开始元素/组件并不会渲染，只 有当条件第 一 次变为真时才开始编译。
+    而 v-show 只是简单的 css 属性切换，无论条件真与否，都会被编译。相比之下， v-if更适合
+条件不经常改变的场景，因为它切换开销相对较大，而 v-show 适用于频繁切换条件 -->
+    <script src="../vue.js"></script>
+    <script>
+        var app4 = new Vue({
+            el: '#app4',
+            data: {
+                status: 1
+            }
+        })
+        var app3 = new Vue({
+            el: '#app3',
+            data: {
+                type: 'name'
+            },
+            methods: {
+                handleToggleClick: function () {
+                    this.type = this.type === 'name' ? 'mail' : 'name'
+                }
+            }
+        })
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+                status: 1
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: '这是一段文本'
+            }
+        })
+    </script>
+</body>
+
+</html>
