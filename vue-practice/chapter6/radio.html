@@ -10,20 +10,23 @@
 
 <body>
     <div id="app">
-        <input type="checkbox" v-model="toggle" :true-value="value1" :false-value="value2">
-        <label>单选按钮</label>
-        <p>{{toggle}}</p>
-        <p>{{value1}}</p>
-        <p>{{value2}}</p>
+        <input type="radio" v-model="picked" value="html" id="html">
+        <label for="html">HTML</label>
+
+        <input type="radio" v-model="picked" value="js" id="js">
+        <label for="html">JavaScript</label>
+
+        <input type="radio" v-model="picked" value="css" id="css">
+        <label for="html">CSS</label>
+
+        <p>选择的项是：{{picked}}</p>
     </div>
     <script src="../vue.js"></script>
     <script>
         var app = new Vue({
             el: '#app',
             data: {
-                toggle: false,
-                value1: 'a',
-                value2: 'b'
+                picked: 'js'
             }
         })
     </script>
