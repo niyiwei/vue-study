@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 使用 props 传递参数</title>
+</head>
+
+<body>
+    <!-- 基本用法 -->
+    <!-- 组件不仅仅是要把模板的内容进行复用，更重要的是组件间要进行通信。通常父组件的模板中包含子组件，父组件要正向地向子组件传递数据或参数，子组件接收到后根据参数的不同来渲染不同的内容 -->
+
+    <!-- 在组件中，使用选项props来声明需要从父级接收的数据 -->
+    <!-- props的值可以是两种，一种是字符串数组，一种是对象 -->
+
+    <!-- props 数组的用法 -->
+    <div id="app">
+        <!-- props中声明的数据与组件data函数return的数据主页的区别就是props的来自父级，而data中是组件自己的数据，作用域是组件本身，这两种数据都可以在模板template及计算属性computed和方法methods中使用。 -->
+        <!-- 由于HTML特性不区分大小写，当使用DOM模板时，驼峰命名（camelCase）的props名称要转为短横分割命名（kebab-case） -->
+        <my-component message="来自父组件的数据"></my-component>
+    </div>
+
+    <br>
+    <br>
+    <!-- 动态的传递数据 -->
+    <div id="app2">
+        <p>动态的传递数据</p>
+        <input type="text" v-model="parentMessage">
+        <my-component2 :message="parentMessage"></my-component2>
+        <!-- 使用绑定 v-bind 传递是数组 -->
+        <my-component2 :message="[1,2,3]"></my-component2>
+        <!-- 不使用 v-bind 传递的仅仅是字符串 -->
+        <my-component2 message="[1,2,3]"></my-component2>
+    </div>
+    <br>
+    <br>
+    <!-- 单项数据流 -->
+    <div id="app3">
+        <!-- 第一种写法，父组件传递初始值，子组件将它作为初始值保存起来 -->
+        <my-component3 :init-count="1"></my-component3>
+
+        <!-- 第二种写法，prop作为需要被转变的原始值传入。这种情况用计算属性 -->
+        <my-component4 :width="100"></my-component4>
+    </div>
+    <!-- 在JavaScript中对象和数组是引用类型，指向同一个内存空间，所以props是对象和数组时，在子组件内改变是会影响父组件的。 -->
+
+    <br>
+    <br>
+    <!-- 数据验证 -->
+    <!-- prop对象类型 -->
+
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('my-component5', {
+            props: {
+                // 必须是数字类型
+                propA: Number,
+                // 必须是字符串或数字类型
+                propB: [String, Number],
+                // 布尔值, 如果没有定义，默认值就是true
+                propC: {
+                    type: Boolean
+                    , default: true
+                },
+                // 如果是数组或对象，默认值必须是一个函数来返回
+                propE: {
+                    type: Array,
+                    default: function () {
+                        return []
+                    }
+                },
+                // 自定义一个验证函数
+                propF: {
+                    validator: function (value) {
+                        return value > 10
+                    }
+                }
+            }
+        })
+    </script>
+    <script>
+        Vue.component('my-component4', {
+            props: ['width']
+            , template: '<div :style="style">组件内容</div>'
+            , computed: {
+                style: function () {
+                    return {
+                        width: this.width + 'px'
+                    }
+                }
+            }
+        })
+        Vue.component('my-component3', {
+            props: ['initCount'],
+            template: '<div>{{count}}</div>'
+            , data: function () {
+                return {
+                    count: this.initCount
+                }
+            }
+        })
+
+        var app3 = new Vue({
+            el: '#app3'
+        })
+    </script>
+    <script>
+        Vue.component('my-component2', {
+            props: ['message']
+            , template: '<div>温馨提示:{{message}}</div>'
+        })
+        var app2 = new Vue({
+            el: '#app2'
+            , data: function () {
+                return {
+                    parentMessage: ''
+                }
+            }
+        })
+    </script>
+    <script>
+        Vue.component('my-component', {
+            props: ['message']
+            , template: '<div>{{message}}</div>'
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

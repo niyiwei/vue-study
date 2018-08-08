@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue-聊天</title>
+</head>
+
+<body>
+    <!-- <Card style="width: 350px;">
+        <p slot="title">与XXX聊天中</p>
+        <a href="#" slot="extra">
+            <Icon type="android-close" size="18"></Icon>
+        </a>
+
+        <div style="height: 100px;">
+            <Row :gutter="16">
+                <i-col span="17">
+                    <i-input v-model="value" placeholder="请输入..."></i-input>
+                </i-col>
+
+                <i-col span="4">
+                    <i-button type="primary" icon="paper-airplane">发送</i-button>
+                </i-col>
+            </Row>
+        </div>
+    </Card> -->
+    <div id="app">
+        <my-component></my-component>
+
+        <!-- Vue 组件的模板在某些情况下会受到HTML的限制，比如<table>内部规定只允许是<tr><td><th>等这些表格元素，所以在<table>内直接使用组件是无效的。可以使用特殊的is属性来挂载组件 -->
+        <!-- 常见的限制元素还有<ul><ol><seelct>。 -->
+        <table>
+            <tbody is="my-component"></tbody>
+        </table>
+    </div>
+
+    <br>
+    <div id="app2">
+        <my-component2></my-component2>
+    </div>
+
+    <br>
+    <div id="app3">
+        <p>return出的对象引用了外部的对象，那这个对象就是共享的</p>
+        <my-component3></my-component3>
+        <my-component3></my-component3>
+        <my-component3></my-component3>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // JavaScript 对象是关系引用关系，所以如果return出的对象引用了外部的一个对象，那这个对象就是共享的，任何一方修改都会同步。
+        var data = {
+            counter: 0
+        }
+        Vue.component('my-component3', {
+            template: '<button @click="counter++">{{counter}}</button>'
+            , data: function () {
+                return data
+                // 不共享，则需要return一个新的独立的对象
+                // return {
+                // counter: 0
+                // }
+            }
+        })
+        var app3 = new Vue({
+            el: '#app3'
+        })
+    </script>
+    <script>
+        // 除了template选项外，组件中还可以像Vue实例那样使用其他的选项，比如 data、computed、methods等。
+        Vue.component('my-component2', {
+            template: '<div>{{message}}</div>'
+            , data: function () {
+                return {
+                    message: '这是组件内容'
+                }
+            }
+        })
+
+        var app2 = new Vue({
+            el: '#app2'
+        })
+    </script>
+    <script>
+        // 局部注册组件，配合 vue components 使用
+        var Child = {
+            template: '<div>局部注册组件的内容</div>'
+        }
+
+        // 全局注册组件
+        Vue.component('my-component', {
+            template: '<div>这里是组件的内容</div>'
+        })
+
+        // 如果全局注册主键和局部注册主键冲突，则局部注册优先
+        var app = new Vue({
+            el: '#app'
+            , components: {
+                'my-component': Child
+            }
+        })
+    </script>
+</body>
+
+</html>
