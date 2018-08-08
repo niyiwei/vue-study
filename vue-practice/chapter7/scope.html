@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 作用域插槽</title>
+</head>
+
+<body>
+    <div id="app">
+        <child-component>
+            <template scope="props">
+                <p>来组父组件的内容</p>
+                <p>{{ props.msg }}</p>
+            </template>
+        </child-component>
+    </div>
+
+    <br>
+    <br>
+    <div id="app2">
+        <my-list :books="books">
+            <!-- 作用域插槽也可以是具名的Slot -->
+            <template slot="book" scope="props">
+                <li>{{ props.bookName }}</li>
+            </template>
+        </my-list>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('my-list', {
+            props: {
+                books: {
+                    type: Array,
+                    default: function () {
+                        return []
+                    }
+                }
+            },
+            template: '\
+            <ul>\
+                <slot name="book"\
+                v-for="book in books"\
+                :book-name="book.name">\
+                </slot>\
+            </ul>'
+        })
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+                books: [{
+                    name: '《Vue.js实战》'
+                }, {
+                    name: '《JavaScript 语言精粹》'
+                }, {
+                    name: '《JavaScript 高级程序设计》'
+                }]
+            }
+        })
+    </script>
+    <script>
+        Vue.component('child-component', {
+            template: '\
+            <div class="container">\
+                <slot msg="来自子组件的内容"></slot>\
+            </div>'
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

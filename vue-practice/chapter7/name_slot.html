@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 具名Slot</title>
+</head>
+
+<body>
+    <div id="app">
+        <child-component>
+            <!-- 给<slot>元素指定一个name后可以分发多个内容，具名Slot可以与单个Slot共存，例如下面的示例: -->
+            <h2 slot="header">标题</h2>
+            <p>正文内容</p>
+            <p>更多的正文内容</p>
+            <p slot="header">怎么说？</p>
+            <div slot="footer">底部信息</div>
+            <!-- 如果没有指定默认的匿名slot，父组件内多余的内容都将被抛弃。 -->
+        </child-component>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('child-component', {
+            template: '\
+            <div class="container">\
+                <div class="header">\
+                    <slot name="header"></slot>\
+                </div>\
+                <div class="main">\
+                    <slot></slot>\
+                </div>\
+                <div class="footer">\
+                    <slot name="footer"></slot>\
+                </div>\
+            </div>'
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

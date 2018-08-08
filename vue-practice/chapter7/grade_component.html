@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 组件高级用法</title>
+</head>
+
+<body>
+    <!-- 递归组件 -->
+    <!-- 组件在它的模块内可以递归地调用自己，只要给组件设置那么的选项就可以了。 -->
+    <div id="app">
+        <child-component :count="1"></child-component>
+    </div>
+
+    <br>
+    <br>
+    <!-- 内联模块 -->
+    <!-- 组件的模板一般都是在 template 选项内定义的，Vue提供了一个内联模板的功能，在使用组件时，给组件标签使用 inline-template特性，组件就会把它的内容当做模板，而不是把它当内容分发 -->
+    <div id="app2">
+        <child-component2 inline-template>
+            <div>
+                <h2>在父组件中定义子组件 的模板 </h2>
+                <p>{{ message }}</p>
+                <p>{{ msg }}</p>
+            </div>
+        </child-component2>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('child-component2', {
+            data: function () {
+                return {
+                    msg: '在子组件声明的数据'
+                }
+            }
+        })
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+                message: '在父组件声明的数据'
+            }
+        })
+    </script>
+    <script>
+        Vue.component('child-component', {
+            name: 'child-component',
+            props: {
+                count: {
+                    type: Number,
+                    default: 1
+                }
+            },
+            template: '\
+            <div class="child">\
+                <child-component\
+                :count="count + 1"\
+                v-if="count < 3"></child-component>\
+            </div>'
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>
