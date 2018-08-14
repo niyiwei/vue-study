@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-    <div id="app" v-cloak>
+    <div id="app" v-cloak v-on:keyup.esc="handleClose">
         <div class="main" v-clickoutside="handleClose">
             <button @click="show = !show">点击显示下拉菜单</button>
             <div class="dropdown" v-show="show">
