@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 自定义指定介绍</title>
+</head>
+
+<body>
+    <div id="app">
+        <div v-test:msg.a.b="message"></div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // 每个钩子都有几个参数可用
+        // el: 指定所绑定的元素，可用来直接操作DOM
+        // binding: 一个对象，包含以下属性
+            // name: 指令名， 不包括 v-前缀
+            // value: 指定的绑定值， 例如 v-my-directive="1 + 1", value的值是2.
+            // oldValue: 指令绑定的前一个值，仅在 update 和 componentUpdated钩子中可用。无论值是否改变都可用
+            // expression 绑定指的字符串形式。例如 v-my-directive="1 + 1", expression的值是 “1 + 1”。
+            // arg： 传给指令的参数。例如 v-my-directive:foo, arg的值是 foo。
+            // modifiers 一个包含修饰符的对象。例如 v-my-directive.foo.bar, 修饰符对象 modifiers 的值是 {foo: true, bar: true}。
+        // vnode  Vue 编译生成的虚拟节点
+        // oldVnode 上一个虚拟节点仅在 update 和componentUpdated 钩子中可用。
+        Vue.directive("test", {
+            bind: function (el, binding, vnode) {
+                var keys = [];
+                for (var i in vnode) {
+                    keys.push(i)
+                }
+                el.innerHTML =
+                    'name: ' + binding.name + '<br>' +
+                    'value: ' + binding.value + '<br>' +
+                    'expression: ' + binding.expression + '<br>' +
+                    'argument: ' + binding.arg + '<br>' +
+                    'modifiers: ' + JSON.stringify(binding.modifiers) + '<br>' +
+                    'vnode keys: ' + keys.join(', ')
+            }
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'some text'
+            }
+        })
+    </script>
+</body>
+
+</html>
