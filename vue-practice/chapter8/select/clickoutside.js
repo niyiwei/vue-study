@@ -1,10 +1,13 @@
 Vue.directive('clickoutside', {
     bind: function (el, binding, vnode) {
         function documentHandler(e) {
-            console.log(binding.value)
-            console.log(binding.expression)
+            console.info(e)
             if (el.contains(e.target)) {
-                return false
+                if(e.type === 'keyup' && e.key === 'Escape'){
+                    console.log('Escape 事件')
+                }else{
+                    return
+                }
             }
             if (binding.expression) {
                 binding.value(e)
@@ -12,6 +15,9 @@ Vue.directive('clickoutside', {
         }
         el.__vueClickoutside__ = documentHandler
         document.addEventListener('click', documentHandler)
+        if(binding.modifiers.esc){
+            el.onkeyup = documentHandler
+        }
     },
     update: function (el, binding, vnode) {
         console.log("update----")
