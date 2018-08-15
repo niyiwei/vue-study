@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 自定义组件练习之出生日期</title>
+</head>
+
+<body>
+    <div id="app">
+        <div v-birthday.day="birth"></div>
+        <div v-birthday.year="birth"></div>
+    </div>
+    <script src="../../vue.js"></script>
+    <script>
+        function getDay(timestamp) {
+            var now = new Date().getTime()
+            return Math.floor(((now - timestamp) / 1000 / 60 / 60 / 24)) + '天';
+        }
+
+        function getYear(timestamp) {
+            var now = new Date()
+            var birth = new Date(timestamp);
+            var result = "";
+            var year = now.getFullYear() - birth.getFullYear();
+            var month = now.getMonth() - birth.getMonth();
+            if (month < 0) {
+                year--;
+                month += 12
+            }
+            result += '您今年' + year + '岁' + month + '月'
+            return result
+        }
+        Vue.directive('birthday', {
+            bind: function (el, binding) {
+                if (binding.modifiers.day) {
+                    el.innerHTML = "您已经出生了" + getDay(binding.value) + "了"
+                } else if (binding.modifiers.year) {
+                    el.innerHTML = getYear(binding.value)
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                birth: new Date('1993/08/15 00:00:00').getTime()
+            }
+        })
+    </script>
+</body>
+
+</html>
