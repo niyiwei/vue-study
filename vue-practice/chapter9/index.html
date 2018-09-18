@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - Render函数</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{name}}</p>
+        <anchor :level="1" title="特性">特性</anchor>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        /**
+        VNode 主要可以分为如下几类
+        1 TextVNode 文本节点
+        2 ElementVNode 普通元素节点
+        3 ComponentVNode 组件节点
+        4 EmptyVNode 没有内容的注释节点
+        5 CloneVNode 克隆节点，可以是以上任意类型的节点，唯一的区别在于 isCloned 属性是否为TRUE
+        */
+        Vue.component('anchor', {
+            props: {
+                level: {
+                    type: Number,
+                    require: true
+                },
+                title: {
+                    type: String,
+                    default: ''
+                }
+            },
+            render: function (createElement) {
+                return createElement('h' + this.level,
+                    [
+                        createElement(
+                            'a', {
+                                domProps: {
+                                    name : 'h'+ this.level,
+                                    href: '#' + this.title
+                                }
+                            }, this.$slots.default
+                        )
+                    ])
+            }
+        })
+
+        var app = new Vue({
+            el: '#app'
+            ,data:{
+                name : '哇哈哈'
+            }
+        })
+    </script>
+</body>
+
+</html>
