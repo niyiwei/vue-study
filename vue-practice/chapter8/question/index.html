@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - 问卷调查WebAPP</title>
+</head>
+
+<body>
+    <div id="app">
+        <div v-show="page == 1">
+            <p>1.请问您的性别是：</p>
+            <input type="radio" value="man" v-model="gender">男
+            <input type="radio" value="woman" v-model="gender">女
+            <input type="radio" value="retain" v-model="gender">保留
+            <div>
+                <q-button v-for="btn in buttonA" v-bind:btn="btn"></q-button>
+            </div>
+        </div>
+    </div>
+    <script src="../../vue.js"></script>
+    <script src="./button.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
