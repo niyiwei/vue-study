@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - render - 在线聊天</title>
+    <style>
+        div {
+            width: 25rem;
+        }
+
+        ul {
+            margin: 0;
+            border: 1px solid grey;
+            padding: 1.4rem;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .left {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <ele></ele>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('ele', {
+            render: function (createElement) {
+                var _this = this;
+                if (this.list.length) {
+                    var listNode = createElement('ul', this.list.map(function (item, index) {
+                        console.log(arguments.length, arguments[0], arguments[1], arguments[2]);
+                        var isMe = (index - 1) % 2 == 0;
+                        var user = isMe ? '我' : '你';
+                        return createElement('li', {
+                            'class': {
+                                right: isMe,
+                                left: !isMe
+                            },
+                            domProps: {
+                                innerHTML: user + ': ' + item
+                            }
+                        });
+                    }))
+                } else {
+                    var listNode = createElement("p", '暂无聊天内容');
+                }
+                return createElement('div', [
+                    listNode,
+                    createElement('input', {
+                        attrs: {
+                            placeholder: '请输入内容，按回车键发送'
+                        },
+                        style: {
+                            width: '200px'
+                        },
+                        on: {
+                            keyup: function (event) {
+                                // 判断事件是否为回车键
+                                if (event.keyCode != 13) {
+                                    return;
+                                }
+                                // 判断聊天框内容是否为空
+                                var content = event.target.value;
+                                if (!content) {
+                                    return;
+                                }
+                                // 将聊天内容添加到聊天列表
+                                _this.list.push(content);
+                                // 清空输入框
+                                event.target.value = '';
+                            }
+                        }
+                    })
+                ])
+            },
+            data: function () {
+                return {
+                    value: '',
+                    list: []
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

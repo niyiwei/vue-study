@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - render - slot</title>
+</head>
+
+<body>
+    <div id="app">
+        <ele></ele>
+        <ele>
+            <p>slot的内容</p>
+        </ele>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('ele', {
+            render: function (createElement) {
+                // this.$slots.default === undefined 说明父组件中没有定义slot，这时可以自定义显示的内容
+                if (this.$slots.default === undefined) {
+                    return createElement('div', '没有使用slot时显示的文本');
+                } else {
+                    return createElement('div', this.$slots.default);
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>

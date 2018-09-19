@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - Render - 函数化组件</title>
+</head>
+
+<body>
+    <!-- Vue.js 提供了一个functional的布尔值选项，设置为TRUE可以使组件无状态和五实例
+        ，也就是没有data和this上下文。这样用render函数返回虚拟节点可以更容易渲染，因为函数化组件只是一个函数-->
+
+    <!-- 使用函数化组件时，Render 函数提供了第二个参数 context来提供临时上下文。组件需要的 data、props、slots、children、parent 都是通过这个上下文来传递的 -->
+    <!-- 比如：this.level 要改写为 context.props.level, this.$slots.default 改写为 context.child -->
+
+    <div id="app">
+        <smart-item :data="data"></smart-item>
+        <button @click="change('img')">切换为图片组件</button>
+        <button @click="change('video')">切换为视频组件</button>
+        <button @click="change('text')">切换为文本组件</button>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var imgItem = {
+            props: ['data'],
+            render: function (createElement) {
+                return createElement('div', [
+                    createElement('P', '图片组件'),
+                    createElement('img', {
+                        attrs: {
+                            src: this.data.url
+                        }
+                    })
+                ])
+            }
+        }
+        var videoItem = {
+            props: ['data'],
+            render: function (createElement) {
+                return createElement('div', [
+                    createElement('p', '视频组件'), createElement('video', {
+                        attrs: {
+                            src: this.data.src,
+                            controls: 'controls',
+                            autoplay: 'autoplay'
+                        }
+                    })
+                ])
+            }
+        }
+
+        var textItem = {
+            props: ['data'],
+            render: function (createElement) {
+                return createElement('div', [
+                    createElement('p', '纯文本组件'), createElement('p', this.data.text)
+                ])
+            }
+        }
+        Vue.component('smart-item', {
+            functional: true,
+            render: function (createElement, context) {
+                function getComponent() {
+                    var data = context.props.data;
+                    // 判断prop：data 的type字段是属于哪种类型的组件
+                    if (data.type === 'img') {
+                        return imgItem;
+                    } else if (data.type === 'video') {
+                        return videoItem;
+                    }
+                    return textItem;
+                }
+                return createElement(
+                    getComponent(), {
+                        props: {
+                            // 把smart-item的prop：data传给上面智能选择的组件
+                            data: context.props.data
+                        }
+                    }, context.children
+                )
+            },
+            props: {
+                data: {
+                    type: Object,
+                    required: true
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                data: {}
+            },
+            methods: {
+                change: function (type) {
+                    if (type === 'img') {
+                        this.data = {
+                            type: 'img',
+                            url: 'https://raw.githubusercontent.com/iview/iview/master/assets/logo.png'
+                        }
+                    } else if (type === 'video') {
+                        this.data = {
+                            type: 'video',
+                            src: 'http://vjs.zencdn.net/v/oceans.mp4'
+                        }
+                    } else if (type === 'text') {
+                        this.data = {
+                            type: 'text',
+                            text: '这是一段文本'
+                        }
+                    }
+                }
+            },
+            created: function () {
+                // 初始化时，默认设置图片组件的数据
+                this.change('img');
+            }
+        })
+    </script>
+</body>
+
+</html>
