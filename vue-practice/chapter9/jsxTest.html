@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue - JSX </title>
+</head>
+
+<body>
+    <div id="app">
+        <Anchor :level="1">
+            <span>一级</span>
+        </Anchor>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // 为了让Render函数更好的书写和阅读，Vue.js提供了 babel-plugin-transform-vue-jsx 来支持JSX 语法。
+        new Vue({
+            el: "#app",
+            render(h) {
+                return (
+                    <Anchor level={1}>
+                        <span>一级</span>标题
+                    </Anchor>
+                )
+            }
+        })
+    </script>
+</body>
+
+</html>
