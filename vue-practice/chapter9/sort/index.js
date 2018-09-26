@@ -3,18 +3,22 @@ var app = new Vue({
     data: {
         columns: [{
             title: '姓名',
-            key: 'name'
+            key: 'name',
+            width: '20%'
         }, {
             title: '年龄',
             key: 'age',
-            sortable: true
+            sortable: true,
+            width: '20%'
         }, {
             title: '出生日期',
             key: 'birthday',
-            sortable: true
+            sortable: true,
+            width: '20%'
         }, {
             title: '地址',
-            key: 'address'
+            key: 'address',
+            width: '30%'
         }],
         data: [{
                 name: '王小明',

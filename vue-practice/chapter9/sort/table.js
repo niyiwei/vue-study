@@ -22,6 +22,7 @@ Vue.component('vTable', {
     render: function (h) {
         var _this = this;
         var ths = [];
+        var cols = [];
         this.currentColumns.forEach(function (col, index) {
             if (col.sortable) {
                 ths.push(h('th', [
@@ -50,6 +51,11 @@ Vue.component('vTable', {
             } else {
                 ths.push(h('th', col.title));
             }
+            cols.push(h('col', {
+                attrs: {
+                    width: col.width
+                }
+            }));
         });
         var trs = [];
         this.currentData.forEach(function (row) {
@@ -60,6 +66,7 @@ Vue.component('vTable', {
             trs.push(h('tr', tds));
         });
         return h('table', [
+            cols,
             h('thead', [
                 h('tr', ths)
             ]), h('tbody', trs)
